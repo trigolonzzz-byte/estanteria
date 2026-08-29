@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pedidos Estanteria</title>
+
+    <link rel="stylesheet" href="styles.css">
+   
+
+</head>
+
+
+<body>
+
+
+    <h1>Pedidos Estanteria</h1>
+
+
+    <div class="container">
+
+
+        <!-- =================================================
+             CLIENT INFORMATION
+        ================================================== -->
+
+        <div class="client-info">
+
+
+            <div class="client-field">
+
+                <label for="client-name">
+                    Cliente / 客户
+                </label>
+
+                <input
+                    type="text"
+                    id="client-name"
+                    placeholder="Nombre del cliente"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="client-field">
+
+                <label for="client-address">
+                    Dirección / 地址
+                </label>
+
+                <input
+                    type="text"
+                    id="client-address"
+                    placeholder="Dirección"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             ORDER TOOLS
+        ================================================== -->
+
+        <div class="order-tools">
+
+
+            <button
+                type="button"
+                class="order-tool-button"
+                id="selected-only-button"
+            >
+                Mostrar seleccionados / 仅显示已选
+            </button>
+
+
+            <button
+                type="button"
+                class="order-tool-button new-order-button"
+                id="new-order-button"
+            >
+                Nuevo pedido / 新订单
+            </button>
+
+
+        </div>
+
+
+        <!-- =================================================
+             ORDER SUMMARY
+        ================================================== -->
+
+        <div
+            class="order-summary"
+            id="order-summary"
+        >
+
+            <div class="order-summary-title">
+                Resumen del pedido / 订单摘要
+            </div>
+
+
+            <div id="order-summary-content">
+
+                <div class="order-summary-empty">
+                    No hay productos seleccionados. / 暂无已选产品
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             GENERATED STANDS
+        ================================================== -->
+
+        <div id="stands-container"></div>
+
+
+        <!-- =================================================
+             PRINT
+        ================================================== -->
+
+        <button
+            class="print-button"
+            id="print-button"
+        >
+            Imprimir / 打印
+        </button>
+
+
+    </div>
+
+
+    <div id="print-area"></div>
+
+
+    <script src="stands.js"></script>
+    <script src="code.js"></script>
+
+
+</body>
+
+</html>
