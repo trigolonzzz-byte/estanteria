@@ -16,7 +16,7 @@ const stands = [
         components: [
             { chinese: "层板", spanish: "Estante 120 45", quantity: 8 },
             { chinese: "腿 T", spanish: "Pata T 130 45", quantity: 1 },
-            { chinese: "手臂", spanish: "Mensula 45 40", quantity: 12 },
+            { chinese: "手臂", spanish: "Mensula 45 40", quantity: 6 },
             { chinese: "背板", spanish: "Fondo 120 31", quantity: 8 },
             { chinese: "上盖板", spanish: "Tapa Arriba 120 21", quantity: 1 },
             { chinese: "下盖板", spanish: "Tapa Abajo 120 21", quantity: 2 },
