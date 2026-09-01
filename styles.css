@@ -49,7 +49,7 @@
 
 
         /* =====================================================
-           CLIENT INFORMATION
+        CLIENT INFORMATION
         ===================================================== */
 
         .client-info {
@@ -63,7 +63,7 @@
             margin-bottom: 25px;
 
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 1fr;
 
             gap: 15px;
         }
@@ -85,7 +85,8 @@
         }
 
 
-        .client-field input {
+        .client-field input,
+        .client-field textarea {
             width: 100%;
 
             padding: 10px 12px;
@@ -96,11 +97,27 @@
             border: 1px solid #555;
             border-radius: 5px;
 
+            font-family:
+                Arial,
+                "Microsoft YaHei",
+                "Noto Sans SC",
+                sans-serif;
+
             font-size: 15px;
         }
 
 
-        .client-field input:focus {
+        .client-field textarea {
+            min-height: 90px;
+
+            resize: vertical;
+
+            line-height: 1.4;
+        }
+
+
+        .client-field input:focus,
+        .client-field textarea:focus {
             outline: none;
 
             border-color: #aaa;
@@ -1039,7 +1056,7 @@
 
                 border-bottom: 1px solid #000;
 
-                font-size: 13px;
+                font-size: 16px;
 
                 line-height: 1.4;
             }
@@ -1054,6 +1071,141 @@
 
             .print-client-label {
                 font-weight: bold;
+            }
+
+            /* =====================================================
+            PRINT SUMMARY PAGE
+            ===================================================== */
+
+            .print-summary-page h2 {
+                text-align: left;
+
+                margin-bottom: 20px;
+            }
+
+
+            .print-summary-client {
+                margin-bottom: 25px;
+
+                padding: 15px;
+
+                border: 1.5px solid #000;
+
+                font-size: 16px;
+
+                line-height: 1.4;
+            }
+
+
+            .print-summary-client-row {
+                margin-bottom: 10px;
+            }
+
+
+            .print-summary-client-row:last-child {
+                margin-bottom: 0;
+            }
+
+
+            .print-summary-client-label {
+                display: block;
+
+                margin-bottom: 3px;
+
+                font-weight: bold;
+            }
+
+
+            .print-summary-observations {
+                white-space: pre-wrap;
+
+                overflow-wrap: anywhere;
+            }
+
+
+            .print-summary-section-title {
+                margin-top: 20px;
+                margin-bottom: 10px;
+
+                font-size: 20px;
+                font-weight: bold;
+
+                border-bottom: 1.5px solid #000;
+
+                padding-bottom: 5px;
+            }
+
+
+            .print-summary-stand {
+                padding: 10px 0;
+
+                border-bottom: 1px solid #aaa;
+            }
+
+
+            .print-summary-stand-header {
+                display: flex;
+
+                justify-content: space-between;
+                align-items: flex-start;
+
+                gap: 20px;
+
+                font-size: 17px;
+                font-weight: bold;
+            }
+
+
+            .print-summary-stand-name {
+                flex: 1;
+            }
+
+
+            .print-summary-quantity {
+                flex-shrink: 0;
+
+                font-weight: bold;
+            }
+
+
+            .print-summary-extras {
+                margin-top: 6px;
+                margin-left: 20px;
+            }
+
+
+            .print-summary-extra {
+                display: flex;
+
+                justify-content: space-between;
+
+                gap: 20px;
+
+                padding: 3px 0;
+
+                font-size: 15px;
+            }
+
+
+            .print-summary-extra-name::before {
+                content: "+ ";
+
+                font-weight: bold;
+            }
+
+
+            .print-summary-other-product {
+                display: flex;
+
+                justify-content: space-between;
+
+                gap: 20px;
+
+                padding: 6px 0;
+
+                border-bottom: 1px solid #ccc;
+
+                font-size: 15px;
             }
 
 
@@ -1081,7 +1233,7 @@
 
 
             .print-quantity {
-                font-size: 14px;
+                font-size: 18px;
                 font-weight: bold;
 
                 margin-bottom: 10px;
@@ -1089,7 +1241,7 @@
 
 
             .print-section-title {
-                font-size: 15px;
+                font-size: 18px;
                 font-weight: bold;
 
                 margin-top: 12px;
@@ -1104,9 +1256,10 @@
                 width: 100%;
                 border-spacing: 0;
                 border: 1.5px solid #000;
-                font-size: 12px;
+                font-size: 16px;
                 page-break-inside: avoid;
                 break-inside: avoid;
+                font-weight: bold;
             }
 
 
@@ -1155,21 +1308,25 @@
 
             .print-component-name {
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
+                align-items: center;
+                gap: 5px;
+            }
 
-                gap: 0;
+            .print-component-name .chinese::after {
+                content: " /";
             }
 
 
             .print-component-name .chinese {
-                font-size: 12px;
+                font-size: 14px;
                 line-height: 1.1;
                 font-weight: 600;
             }
 
 
             .print-component-name .spanish {
-                font-size: 10px;
+                font-size: 14px;
                 line-height: 1.1;
                 font-weight: 600;
             }

@@ -22,9 +22,9 @@ const clientNameInput =
         "client-name"
     );
 
-const clientAddressInput =
+const clientObservationsInput =
     document.getElementById(
-        "client-address"
+        "client-observations"
     );
 
 const selectedOnlyButton =
@@ -1669,8 +1669,8 @@ newOrderButton.addEventListener(
             confirm(
                 "¿Crear un nuevo pedido?\n" +
                 "是否创建新订单？\n\n" +
-                "Se borrarán el cliente, dirección, cantidades, extras y otros productos.\n" +
-                "客户、地址、数量、额外配件和其他产品将全部清空。"
+                "Se borrarán el cliente, observaciones, cantidades, extras y otros productos.\n" +
+                "客户、备注、数量、额外配件和其他产品将全部清空。"
             );
 
         if (
@@ -1700,7 +1700,7 @@ function resetOrder() {
     clientNameInput.value =
         "";
 
-    clientAddressInput.value =
+    clientObservationsInput.value =
         "";
 
 
@@ -1888,7 +1888,35 @@ printButton.addEventListener(
 
 
         // =================================================
-        // STANDS
+        // CHECK IF SOMETHING IS SELECTED
+        // =================================================
+
+        const hasSelectedProducts =
+            hasProductsToPrint();
+
+        if (
+            !hasSelectedProducts
+        ) {
+
+            alert(
+                "Seleccione al menos un producto.\n" +
+                "请至少选择一个产品。"
+            );
+
+            return;
+
+        }
+
+
+        // =================================================
+        // FIRST PAGE - ORDER SUMMARY
+        // =================================================
+
+        createPrintSummaryPage();
+
+
+        // =================================================
+        // STAND COMPONENT PAGES
         // =================================================
 
         const accordions =
@@ -1933,7 +1961,7 @@ printButton.addEventListener(
 
 
         // =================================================
-        // OTHER PRODUCTS
+        // OTHER PRODUCTS PAGE
         // =================================================
 
         const otherProductsAccordion =
@@ -1952,31 +1980,676 @@ printButton.addEventListener(
         }
 
 
-        // =================================================
-        // NOTHING SELECTED
-        // =================================================
-
-        if (
-            printArea.children.length === 0
-        ) {
-
-            alert(
-                "Seleccione al menos un producto.\n" +
-                "请至少选择一个产品。"
-            );
-
-            return;
-
-        }
-
         window.print();
 
     }
 );
 
+// =====================================================
+// CHECK IF ORDER HAS PRODUCTS
+// =====================================================
+
+function hasProductsToPrint() {
+
+    let hasProducts =
+        false;
+
+
+    // =================================================
+    // STANDS
+    // =================================================
+
+    standsContainer
+        .querySelectorAll(
+            ".accordion"
+        )
+        .forEach(
+            accordion => {
+
+                const checkbox =
+                    accordion.querySelector(
+                        '.accordion-header input[type="checkbox"]'
+                    );
+
+                const quantityInput =
+                    accordion.querySelector(
+                        ".accordion-header .quantity"
+                    );
+
+                const quantity =
+                    sanitizeQuantity(
+                        quantityInput.value
+                    );
+
+                if (
+                    checkbox.checked &&
+                    quantity > 0
+                ) {
+
+                    hasProducts =
+                        true;
+
+                }
+
+            }
+        );
+
+
+    // =================================================
+    // OTHER PRODUCTS
+    // =================================================
+
+    standsContainer
+        .querySelectorAll(
+            ".other-product-quantity"
+        )
+        .forEach(
+            input => {
+
+                if (
+                    sanitizeQuantity(
+                        input.value
+                    ) > 0
+                ) {
+
+                    hasProducts =
+                        true;
+
+                }
+
+            }
+        );
+
+
+    return hasProducts;
+
+}
 
 // =====================================================
-// ADD CLIENT INFORMATION
+// CREATE ORDER SUMMARY PRINT PAGE
+// =====================================================
+
+function createPrintSummaryPage() {
+
+    const page =
+        document.createElement(
+            "div"
+        );
+
+    page.className =
+        "print-page print-summary-page";
+
+
+    // =================================================
+    // TITLE
+    // =================================================
+
+    const title =
+        document.createElement(
+            "h2"
+        );
+
+    title.textContent =
+        "Resumen del pedido / 订单摘要";
+
+    page.appendChild(
+        title
+    );
+
+
+    // =================================================
+    // CLIENT INFORMATION
+    // =================================================
+
+    const clientName =
+        clientNameInput.value.trim();
+
+    const observations =
+        clientObservationsInput.value.trim();
+
+
+    if (
+        clientName !== "" ||
+        observations !== ""
+    ) {
+
+        const clientBox =
+            document.createElement(
+                "div"
+            );
+
+        clientBox.className =
+            "print-summary-client";
+
+
+        // =============================================
+        // CLIENT NAME
+        // =============================================
+
+        if (
+            clientName !== ""
+        ) {
+
+            const clientRow =
+                document.createElement(
+                    "div"
+                );
+
+            clientRow.className =
+                "print-summary-client-row";
+
+
+            const label =
+                document.createElement(
+                    "span"
+                );
+
+            label.className =
+                "print-summary-client-label";
+
+            label.textContent =
+                "Cliente / 客户:";
+
+
+            const value =
+                document.createElement(
+                    "div"
+                );
+
+            value.textContent =
+                clientName;
+
+
+            clientRow.appendChild(
+                label
+            );
+
+            clientRow.appendChild(
+                value
+            );
+
+            clientBox.appendChild(
+                clientRow
+            );
+
+        }
+
+
+        // =============================================
+        // OBSERVATIONS
+        // =============================================
+
+        if (
+            observations !== ""
+        ) {
+
+            const observationsRow =
+                document.createElement(
+                    "div"
+                );
+
+            observationsRow.className =
+                "print-summary-client-row";
+
+
+            const label =
+                document.createElement(
+                    "span"
+                );
+
+            label.className =
+                "print-summary-client-label";
+
+            label.textContent =
+                "Observaciones / 备注:";
+
+
+            const value =
+                document.createElement(
+                    "div"
+                );
+
+            value.className =
+                "print-summary-observations";
+
+            value.textContent =
+                observations;
+
+
+            observationsRow.appendChild(
+                label
+            );
+
+            observationsRow.appendChild(
+                value
+            );
+
+            clientBox.appendChild(
+                observationsRow
+            );
+
+        }
+
+
+        page.appendChild(
+            clientBox
+        );
+
+    }
+
+
+    // =================================================
+    // STANDS TITLE
+    // =================================================
+
+    const standsTitle =
+        document.createElement(
+            "div"
+        );
+
+    standsTitle.className =
+        "print-summary-section-title";
+
+    standsTitle.textContent =
+        "Estanterías / 货架";
+
+    page.appendChild(
+        standsTitle
+    );
+
+
+    // =================================================
+    // SELECTED STANDS
+    // =================================================
+
+    standsContainer
+        .querySelectorAll(
+            ".accordion"
+        )
+        .forEach(
+            accordion => {
+
+                const checkbox =
+                    accordion.querySelector(
+                        '.accordion-header input[type="checkbox"]'
+                    );
+
+                const quantityInput =
+                    accordion.querySelector(
+                        ".accordion-header .quantity"
+                    );
+
+                const standQuantity =
+                    sanitizeQuantity(
+                        quantityInput.value
+                    );
+
+
+                if (
+                    !checkbox.checked ||
+                    standQuantity <= 0
+                ) {
+
+                    return;
+
+                }
+
+
+                // =========================================
+                // STAND WRAPPER
+                // =========================================
+
+                const standBlock =
+                    document.createElement(
+                        "div"
+                    );
+
+                standBlock.className =
+                    "print-summary-stand";
+
+
+                // =========================================
+                // STAND HEADER
+                // =========================================
+
+                const standHeader =
+                    document.createElement(
+                        "div"
+                    );
+
+                standHeader.className =
+                    "print-summary-stand-header";
+
+
+                const standName =
+                    document.createElement(
+                        "div"
+                    );
+
+                standName.className =
+                    "print-summary-stand-name";
+
+
+                const standChinese =
+                    accordion.querySelector(
+                        ".stand-name .chinese"
+                    )
+                    .textContent
+                    .trim();
+
+                const standSpanish =
+                    accordion.querySelector(
+                        ".stand-name .spanish"
+                    )
+                    .textContent
+                    .trim();
+
+
+                standName.textContent =
+                    standChinese +
+                    " / " +
+                    standSpanish;
+
+
+                const quantity =
+                    document.createElement(
+                        "div"
+                    );
+
+                quantity.className =
+                    "print-summary-quantity";
+
+                quantity.textContent =
+                    "× " +
+                    standQuantity;
+
+
+                standHeader.appendChild(
+                    standName
+                );
+
+                standHeader.appendChild(
+                    quantity
+                );
+
+                standBlock.appendChild(
+                    standHeader
+                );
+
+
+                // =========================================
+                // EXTRAS
+                // =========================================
+
+                const extrasContainer =
+                    document.createElement(
+                        "div"
+                    );
+
+                extrasContainer.className =
+                    "print-summary-extras";
+
+                let hasExtras =
+                    false;
+
+
+                accordion
+                    .querySelectorAll(
+                        ".addon-accordion"
+                    )
+                    .forEach(
+                        addon => {
+
+                            const addonQuantity =
+                                sanitizeQuantity(
+                                    addon.querySelector(
+                                        ".addon-quantity"
+                                    ).value
+                                );
+
+
+                            if (
+                                addonQuantity <= 0
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            hasExtras =
+                                true;
+
+
+                            const extra =
+                                document.createElement(
+                                    "div"
+                                );
+
+                            extra.className =
+                                "print-summary-extra";
+
+
+                            const extraName =
+                                document.createElement(
+                                    "div"
+                                );
+
+                            extraName.className =
+                                "print-summary-extra-name";
+
+
+                            const chinese =
+                                addon.querySelector(
+                                    ".addon-name .chinese"
+                                )
+                                .textContent
+                                .trim();
+
+                            const spanish =
+                                addon.querySelector(
+                                    ".addon-name .spanish"
+                                )
+                                .textContent
+                                .trim();
+
+
+                            extraName.textContent =
+                                chinese +
+                                " / " +
+                                spanish;
+
+
+                            const extraQuantity =
+                                document.createElement(
+                                    "div"
+                                );
+
+                            extraQuantity.className =
+                                "print-summary-quantity";
+
+                            extraQuantity.textContent =
+                                "× " +
+                                addonQuantity;
+
+
+                            extra.appendChild(
+                                extraName
+                            );
+
+                            extra.appendChild(
+                                extraQuantity
+                            );
+
+                            extrasContainer.appendChild(
+                                extra
+                            );
+
+                        }
+                    );
+
+
+                if (
+                    hasExtras
+                ) {
+
+                    standBlock.appendChild(
+                        extrasContainer
+                    );
+
+                }
+
+
+                page.appendChild(
+                    standBlock
+                );
+
+            }
+        );
+
+
+    // =================================================
+    // OTHER PRODUCTS
+    // =================================================
+
+    const selectedOtherProducts =
+        [];
+
+    standsContainer
+        .querySelectorAll(
+            ".other-product-row"
+        )
+        .forEach(
+            row => {
+
+                const quantity =
+                    sanitizeQuantity(
+                        row.querySelector(
+                            ".other-product-quantity"
+                        ).value
+                    );
+
+                if (
+                    quantity <= 0
+                ) {
+
+                    return;
+
+                }
+
+
+                selectedOtherProducts.push({
+
+                    chinese:
+                        row.querySelector(
+                            ".other-product-name .chinese"
+                        )
+                        .textContent
+                        .trim(),
+
+                    spanish:
+                        row.querySelector(
+                            ".other-product-name .spanish"
+                        )
+                        .textContent
+                        .trim(),
+
+                    quantity:
+                        quantity
+
+                });
+
+            }
+        );
+
+
+    if (
+        selectedOtherProducts.length > 0
+    ) {
+
+        const otherTitle =
+            document.createElement(
+                "div"
+            );
+
+        otherTitle.className =
+            "print-summary-section-title";
+
+        otherTitle.textContent =
+            "Otros Productos / 其他产品";
+
+        page.appendChild(
+            otherTitle
+        );
+
+
+        selectedOtherProducts.forEach(
+            product => {
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+                row.className =
+                    "print-summary-other-product";
+
+
+                const name =
+                    document.createElement(
+                        "div"
+                    );
+
+                name.textContent =
+                    product.chinese +
+                    " / " +
+                    product.spanish;
+
+
+                const quantity =
+                    document.createElement(
+                        "div"
+                    );
+
+                quantity.className =
+                    "print-summary-quantity";
+
+                quantity.textContent =
+                    "× " +
+                    product.quantity;
+
+
+                row.appendChild(
+                    name
+                );
+
+                row.appendChild(
+                    quantity
+                );
+
+                page.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    // =================================================
+    // ADD SUMMARY AS FIRST PAGE
+    // =================================================
+
+    printArea.appendChild(
+        page
+    );
+
+}
+
+
+// =====================================================
+// ADD CLIENT NAME TO COMPONENT PRINT PAGE
 // =====================================================
 
 function addClientInfo(
@@ -1986,17 +2659,15 @@ function addClientInfo(
     const clientName =
         clientNameInput.value.trim();
 
-    const clientAddress =
-        clientAddressInput.value.trim();
 
     if (
-        clientName === "" &&
-        clientAddress === ""
+        clientName === ""
     ) {
 
         return;
 
     }
+
 
     const clientInfo =
         document.createElement(
@@ -2006,31 +2677,14 @@ function addClientInfo(
     clientInfo.className =
         "print-client-info";
 
-    if (
-        clientName !== ""
-    ) {
 
-        clientInfo.appendChild(
-            createClientRow(
-                "Cliente / 客户:",
-                clientName
-            )
-        );
+    clientInfo.appendChild(
+        createClientRow(
+            "Cliente / 客户:",
+            clientName
+        )
+    );
 
-    }
-
-    if (
-        clientAddress !== ""
-    ) {
-
-        clientInfo.appendChild(
-            createClientRow(
-                "Dirección / 地址:",
-                clientAddress
-            )
-        );
-
-    }
 
     page.appendChild(
         clientInfo
