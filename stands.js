@@ -744,7 +744,7 @@ const stands = [
             { chinese: "黑色档网", spanish: "Rejilla plastico Negro 90", quantity: 6 },
             { chinese: "价格条", spanish: "Porta Precio 90", quantity: 6 },
             { chinese: "灯", spanish: "Led", quantity: 5 },
-            { chinese: "下盖板 90", spanish: "Tapa Abajo 90 20", quantity: 1 },
+            { chinese: "上盖板 90", spanish: "Tapa Arriba 90 20", quantity: 1 },
             { chinese: "螺丝", spanish: "Tornillos", quantity: 1 }
         ],
 
